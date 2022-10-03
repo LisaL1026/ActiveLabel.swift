@@ -290,6 +290,13 @@ typealias ElementTuple = (range: NSRange, element: ActiveElement, type: ActiveTy
             clearActiveElements()
             let newString = parseTextAndExtractActiveElements(mutAttrString)
             mutAttrString.mutableString.setString(newString)
+            
+            // fix issue that remove original attributes.
+            // https://github.com/optonaut/ActiveLabel.swift/pull/311
+            let range = (attributedText.string as NSString).range(of: newString)
+            attributedText.enumerateAttributes(in: range, options: .longestEffectiveRangeNotRequired, using: { (attribute, range, stop) in
+                mutAttrString.addAttributes(attribute, range: range)
+            })
         }
         
         addLinkAttribute(mutAttrString)
