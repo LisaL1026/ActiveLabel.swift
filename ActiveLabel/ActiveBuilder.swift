@@ -28,7 +28,7 @@ struct ActiveBuilder {
     static func createURLElements(from text: String, range: NSRange, maximumLength: Int?) -> ([ElementTuple], String) {
         let type = ActiveType.url
         var text = text
-        let matches = RegexParser.getElements(from: text, with: type.pattern, range: range)
+        let matches = RegexParser.getElements(from: text, with: type, range: range)
         let nsstring = text as NSString
         var elements: [ElementTuple] = []
 
@@ -59,7 +59,7 @@ struct ActiveBuilder {
                                                 minLength: Int = 2,
                                                 filterPredicate: ActiveFilterPredicate?) -> [ElementTuple] {
 
-        let matches = RegexParser.getElements(from: text, with: type.pattern, range: range)
+        let matches = RegexParser.getElements(from: text, with: type, range: range)
         let nsstring = text as NSString
         var elements: [ElementTuple] = []
 
@@ -78,7 +78,7 @@ struct ActiveBuilder {
                                                                   for type: ActiveType,
                                                                       range: NSRange,
                                                                       filterPredicate: ActiveFilterPredicate?) -> [ElementTuple] {
-        let matches = RegexParser.getElements(from: text, with: type.pattern, range: range)
+        let matches = RegexParser.getElements(from: text, with: type, range: range)
         let nsstring = text as NSString
         var elements: [ElementTuple] = []
 

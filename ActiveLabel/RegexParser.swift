@@ -19,9 +19,15 @@ struct RegexParser {
 
     private static var cachedRegularExpressions: [String : NSRegularExpression] = [:]
 
-    static func getElements(from text: String, with pattern: String, range: NSRange) -> [NSTextCheckingResult]{
-        guard let elementRegex = regularExpression(for: pattern) else { return [] }
-        return elementRegex.matches(in: text, options: [], range: range)
+    static func getElements(from text: String, with type: ActiveType, range: NSRange) -> [NSTextCheckingResult]{
+        switch type {
+        case .url:
+            return getURLElements(from: text, range: range)
+            
+        default:
+            guard let elementRegex = regularExpression(for: type.pattern) else { return [] }
+            return elementRegex.matches(in: text, options: [], range: range)
+        }
     }
 
     private static func regularExpression(for pattern: String) -> NSRegularExpression? {
@@ -32,6 +38,17 @@ struct RegexParser {
             return createdRegex
         } else {
             return nil
+        }
+    }
+    
+    static func getURLElements(from text: String, range: NSRange) -> [NSTextCheckingResult]{
+        let types: NSTextCheckingResult.CheckingType = .link
+        
+        if let detector = try? NSDataDetector(types: types.rawValue) {
+            let matches = detector.matches(in: text, options: .reportCompletion, range: NSMakeRange(0, text.count))
+            return matches
+        } else {
+            return []
         }
     }
 }
