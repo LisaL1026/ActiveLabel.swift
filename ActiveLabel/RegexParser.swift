@@ -45,7 +45,7 @@ struct RegexParser {
         let types: NSTextCheckingResult.CheckingType = .link
         
         if let detector = try? NSDataDetector(types: types.rawValue) {
-            let matches = detector.matches(in: text, options: .reportCompletion, range: NSMakeRange(0, text.count))
+            let matches = detector.matches(in: text, options: .reportCompletion, range: range)
             return matches
         } else {
             return []
